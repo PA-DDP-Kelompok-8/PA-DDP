@@ -1,5 +1,4 @@
-#last update 08-11-2024 : 08.54
-
+Last update 09-11-2024 : 07.53
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -8,8 +7,8 @@ import random
 
 csv_file = 'data.csv'
 
-simbol  = [
-    "!", "@", "#", "$", "%", "^", "&", "*", "(",")", "-", "_", "+", "=", 
+simbol  = [  # Daftar simbol yang tidak boleh ada dalam nama
+    "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "+", "=", 
     "{", "}", "[", "]", ":", ";", "\"", "'", "<", ">", ",", ".", "?", "/", "|", "~"
 ]
 angka = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -19,6 +18,17 @@ def cek_akun_terdaftar(nama):
     try:
         with open(csv_file, mode="r", newline="", encoding="utf-8") as akun_file:
             reader = csv.DictReader(akun_file)
+            for row in reader:
+                if row["nama"] == nama:
+                    return True
+        return False
+    except FileNotFoundError:
+        return False
+
+def cek_beasiswa_terdaftar_admin(nama):
+    try:
+        with open("beasiswa.csv", mode="r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
             for row in reader:
                 if row["nama"] == nama:
                     return True
@@ -56,7 +66,10 @@ def cek_login(nama, password):
         print("Database akun tidak ditemukan.")
         return None
 
-#Buat liat beasiswa
+def format_nominal(nominal):
+    return f"Rp. {nominal:,.0f}".replace(',', '.')
+
+# Buat lihat beasiswa
 def lihat_beasiswa():
     table = PrettyTable()
     table.field_names = ["ID", "Nama Beasiswa", "Minimal IPK", "Jumlah Hadiah", "Kuota"]
@@ -65,16 +78,16 @@ def lihat_beasiswa():
         with open('beasiswa.csv', mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                table.add_row([row['id'], row['nama'], row['ipk'], row['jumlah'], row['kuota']])
+                formatted_jumlah = format_nominal(float(row['jumlah'].replace('Rp. ', '').replace('.', '').replace(',', '')))
+                table.add_row([row['id'], row['nama'], row['ipk'], formatted_jumlah, row['kuota']])
         
         print(table)
     except FileNotFoundError:
         print("File beasiswa.csv tidak ditemukan.")
 
-
 def lihat_data_user():
     table = PrettyTable()
-    table.field_names = ["Nama", "Password", "Role", "ipk", "saldo"]
+    table.field_names = ["Nama", "Password", "Role", "IPK", "Saldo"]
     
     try:
         with open('data.csv', mode='r', newline='', encoding='utf-8') as file:
@@ -87,7 +100,7 @@ def lihat_data_user():
         print("File data.csv tidak ditemukan.")
 
 def tambah_beasiswa(nama, ipk, jumlah, kuota):
-    dataheader_beasiswa = ["id", "nama", "ipk", "jumlah", "Kuota"]
+    dataheader_beasiswa = ["id", "nama", "ipk", "jumlah", "kuota"]
     
     try:
         with open('beasiswa.csv', mode='r', newline='', encoding='utf-8') as file:
@@ -97,7 +110,7 @@ def tambah_beasiswa(nama, ipk, jumlah, kuota):
         id_terakhir = 1 
 
     data_beasiswa = [
-        {"id": id_terakhir, "nama": nama, "ipk": ipk, "jumlah": jumlah, "Kuota": kuota}
+        {"id": id_terakhir, "nama": nama, "ipk": ipk, "jumlah": jumlah, "kuota": kuota}
     ]
 
     try:
@@ -107,11 +120,12 @@ def tambah_beasiswa(nama, ipk, jumlah, kuota):
             if file.tell() == 0:  
                 writer.writeheader()
             writer.writerows(data_beasiswa)  
-        print("Beasiswa berhasil ditambahkan.")
+        print(f"Beasiswa berhasil ditambahkan dengan jumlah: {format_nominal(float(jumlah))}")
+
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
 
-#buat update beasiswa
+# Buat update beasiswa
 def update_beasiswa(beasiswa_id, ipk=None, jumlah=None, kuota=None):
     updated = False
     data = []
@@ -127,7 +141,7 @@ def update_beasiswa(beasiswa_id, ipk=None, jumlah=None, kuota=None):
                 if jumlah is not None:
                     row['jumlah'] = jumlah
                 if kuota is not None:
-                    row['Kuota'] = kuota
+                    row['kuota'] = kuota
                 updated = True
 
         if updated:
@@ -141,7 +155,7 @@ def update_beasiswa(beasiswa_id, ipk=None, jumlah=None, kuota=None):
     except FileNotFoundError:
         print("File beasiswa.csv tidak ditemukan.")
 
-#Buat update data
+# Buat update data user
 def update_data_user(nama, role=None, saldo=None):
     updated = False
     data = []
@@ -169,11 +183,11 @@ def update_data_user(nama, role=None, saldo=None):
     except FileNotFoundError:
         print("File data.csv tidak ditemukan.")
 
+# Hapus akun
 def hapus_akun(nama):
     data = []
     found = False  
     try:
-    
         with open('data.csv', mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             data = list(reader)
@@ -195,6 +209,9 @@ def hapus_akun(nama):
     
     except FileNotFoundError:
         print("File data.csv tidak ditemukan.")
+    except KeyboardInterrupt:
+        print("\nOperasi dibatalkan oleh pengguna.")
+        menu_admin()
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
 
@@ -211,19 +228,17 @@ def get_nama_beasiswa_by_id(beasiswa_id):
         print("File beasiswa.csv tidak ditemukan.")
         return None
 
+# Hapus beasiswa
 def hapus_beasiswa(beasiswa_id):
     data = []
     deleted = False
     try:
-        # Membaca data beasiswa dari file
         with open('beasiswa.csv', mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             data = list(reader)
         
-        # Filter data untuk menghapus beasiswa dengan ID yang cocok
         data = [row for row in data if row['id'] != str(beasiswa_id)]
         
-        # Mengurutkan ulang ID setelah penghapusan
         for i, row in enumerate(data, start=1):
             row['id'] = str(i)
         
@@ -238,6 +253,7 @@ def hapus_beasiswa(beasiswa_id):
             writer.writerows(data)
         print(f"Beasiswa dengan ID {beasiswa_id} berhasil dihapus.")
 
+# Invoice
 def invoice():
     try:
         with open("transaksi.csv", "r", newline="", encoding="utf-8") as file:
@@ -267,18 +283,15 @@ def invoice():
 def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
     dataheader_transaksi = ["id_transaksi", "nama_user", "nama_beasiswa", "jumlah_beasiswa", "tanggal"]
     
-    # Cek apakah beasiswa ada
     nama_beasiswa = get_nama_beasiswa_by_id(beasiswa_id)
     if not nama_beasiswa:
         print("Beasiswa dengan ID tersebut tidak ditemukan.")
         return
     
-    # Cek apakah user sudah mendaftar beasiswa ini sebelumnya
     if cek_beasiswa_terdaftar(nama_user, nama_beasiswa):
         print("Kamu telah mendaftar beasiswa ini")
         return
         
-    # Jika belum terdaftar, lanjut menyimpan transaksi
     try:
         with open('Transaksi.csv', mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
@@ -286,7 +299,6 @@ def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
     except FileNotFoundError:
         id_terakhir = 1
 
-    # Data transaksi baru
     data_transaksi = [{
         "id_transaksi": id_terakhir,
         "nama_user": nama_user,
@@ -295,7 +307,6 @@ def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
         "tanggal": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }]
     
-    # Simpan transaksi ke file
     try:
         with open('Transaksi.csv', mode='a', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=dataheader_transaksi)
@@ -303,7 +314,8 @@ def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
             if file.tell() == 0:
                 writer.writeheader()
             writer.writerows(data_transaksi)
-        invoice()  # Tampilkan invoice setelah berhasil menyimpan
+            print(f"Jumlah        : {format_nominal(jumlah_beasiswa)}")
+            invoice()
 
     except Exception as e:
         print(f"Terjadi kesalahan saat menyimpan transaksi: {e}")
@@ -357,13 +369,12 @@ def daftar_beasiswa(nama_user, beasiswa_id):
                 writer.writerows(beasiswa_data)
             print(f"{nama_user} berhasil mendaftar ke beasiswa dengan ID {beasiswa_id}.")
 
-            # Tambahkan transaksi
             jumlah_beasiswa = next((row['jumlah'] for row in beasiswa_data if row['id'] == str(beasiswa_id)), None)
             if jumlah_beasiswa:
                 simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa)
         else:
             print("Beasiswa dengan ID tersebut tidak ditemukan.")
-    
+
     except FileNotFoundError as e:
         print(f"File tidak ditemukan: {e}")
 
@@ -383,7 +394,6 @@ def lihat_beasiswa_terdaftar(nama_user):
 
 def lihat_data_diri(nama_user):
     try:
-        # Membaca data pengguna dari file
         with open('data.csv', mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -449,8 +459,7 @@ def update_saldo(nama_user, jumlah):
         for row in data:
             if row['nama'] == nama_user:
                 # Pastikan saldo juga merupakan float sebelum ditambahkan
-                row['saldo'] = str(float(row['saldo']) + jumlah)  # Update saldo sebagai string
-                
+                row['saldo'] = str(float(row['saldo']) + jumlah)  
                 updated = True
         
         if updated:
@@ -466,16 +475,17 @@ def update_saldo(nama_user, jumlah):
         print("File data.csv tidak ditemukan.")
     except ValueError as ve:
         print(f"Terjadi kesalahan konversi: {ve}")
+    except KeyboardInterrupt:
+        print("\nOperasi dibatalkan.")
+        menu_admin()
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
-
 
 def search():
     nama = input("Nama beasiswa: ").lower()
     found = False
     
     try:
-        # Buat tabel
         table = PrettyTable()
         table.field_names = ["ID", "Nama Beasiswa", "IPK Minimal", "Jumlah", "Kuota"]
         
@@ -483,13 +493,7 @@ def search():
             reader = csv.DictReader(file)
             for row in reader:
                 if nama in row['nama'].lower():
-                    table.add_row([
-                        row['id'],
-                        row['nama'],
-                        row['ipk'],
-                        row['jumlah'],
-                        row['kuota']
-                    ])
+                    table.add_row([row['id'], row['nama'], row['ipk'], row['jumlah'], row['kuota']])
                     found = True
         
         if found:
@@ -509,23 +513,16 @@ def sorting(file_path, urutkan_berdasarkan='ipk', menurun=False):
             reader = csv.DictReader(file)
             data = list(reader)
 
-            # Pastikan kolom untuk pengurutan valid
             if urutkan_berdasarkan not in ['ipk', 'jumlah', 'id']:
                 print("Kriteria pengurutan tidak valid. Gunakan 'ipk', 'jumlah', atau 'id'.")
                 return
             
-            # Mengubah 'jumlah' menjadi float untuk pengurutan jika urutkan berdasarkan jumlah
             if urutkan_berdasarkan == 'jumlah':
                 for entry in data:
-                    try:
-                        entry['jumlah'] = float(entry['jumlah'].replace('Rp. ', '').replace('.', '').replace(',', ''))
-                    except ValueError:
-                        print(f"Kesalahan konversi pada entri: {entry}")
-                        return
+                    entry['jumlah'] = float(entry['jumlah'].replace('Rp. ', '').replace('.', '').replace(',', ''))
             
-            # Melakukan pengurutan
             if urutkan_berdasarkan == 'id':
-                sorted_data = sorted(data, key=lambda x: int(x['id']), reverse=menurun)  # ID diurutkan sebagai integer
+                sorted_data = sorted(data, key=lambda x: int(x['id']), reverse=menurun)  
             else:
                 sorted_data = sorted(data, key=lambda x: float(x[urutkan_berdasarkan]), reverse=menurun)
 
@@ -536,7 +533,6 @@ def sorting(file_path, urutkan_berdasarkan='ipk', menurun=False):
             writer.writerows(sorted_data)
         
         print("\nData beasiswa berhasil diurutkan.")
-        # Tampilkan data yang sudah diurutkan
         table = PrettyTable()
         table.field_names = ["ID", "Nama Beasiswa", "IPK Minimal", "Jumlah", "Kuota"]
         for row in sorted_data:
@@ -557,136 +553,136 @@ def menu_admin():
         print("3. Update beasiswa/user")
         print("4. Hapus beasiswa/user")
         print("5. Logout")
-        pilihan = input("Masukan pilihan: ")
+        try:
+            pilihan = input("Masukan pilihan: ")
 
-        #Buat lihat
-        if pilihan == "1":
-            print("1. Lihat akun")
-            print("2. Lihat Beasiswa")
-            pil_1 = input("Masukan pilihan: ")
-            if pil_1 == "1":
-                lihat_data_user()
-            elif pil_1 == "2":
-                lihat_beasiswa()
-            else:
-                print("Pilihan tidak Valid")
-                menu_admin()
-        
-        #Buat nambah
-        elif pilihan == "2":
-            while True:
-                nama = input("Masukan nama beasiswa: ")
-                try:
-                    ipk = float(input("Masukan jumlah minimal ipk: "))
-                    if ipk > 4.0:
-                        print("IPK tidak boleh melebihi 4")
-                        continue
-                    jumlah = float(input("Masukan jumlah beasiswa: "))
-                    kuota = int(input("Masukan kuota beasiswa: "))
-                    if ipk < 0 or jumlah < 0 or kuota < 0:
-                        print("Angka tidak boleh negatif")
-                        break
-                    tambah_beasiswa(nama, ipk, jumlah, kuota)
-                    break
-                except ValueError:
-                    print("Nilai yang anda masukan bukan merupakan angka")
-        
-        elif pilihan == "3":
-            print("1. Update akun")
-            print("2. Update Beasiswa")
-            pil_1 = input("Masukan pilihan: ")
+            if pilihan == "1":
+                print("1. Lihat akun")
+                print("2. Lihat Beasiswa")
+                pil_1 = input("Masukan pilihan: ")
+                if pil_1 == "1":
+                    lihat_data_user()
+                elif pil_1 == "2":
+                    lihat_beasiswa()
+                else:
+                    print("Pilihan tidak Valid")
+                    menu_admin()
             
-            if pil_1 == "1":
-                lihat_data_user()
-                nama = input("Masukkan nama user: ")
-                print("Pilih Role Baru:")
-                print("1. Admin")
-                print("2. User")
-                valid_input = True  # Flag untuk cek validitas input
+            elif pilihan == "2":
+                while True:
+                    nama = input("Masukan nama beasiswa: ")
+                    if cek_beasiswa_terdaftar_admin(nama):
+                        print("Nama ini sudah didaftarkan")
+                        continue
+                    if nama == "":
+                        menu_admin()
+                    try:
+                        ipk = float(input("Masukan jumlah minimal ipk: "))
+                        if ipk > 4.0:
+                            print("IPK tidak boleh melebihi 4")
+                            continue
+                        jumlah = float(input("Masukan nominal beasiswa: "))
+                        kuota = int(input("Masukan kuota beasiswa: "))
+                        if ipk < 0 or jumlah < 0 or kuota < 0:
+                            print("Angka tidak boleh negatif")
+                            break
+                        tambah_beasiswa(nama, ipk, jumlah, kuota)
+                        break
+                    except ValueError:
+                        print("Nilai yang anda masukan bukan merupakan angka")
+            
+            elif pilihan == "3":
+                print("1. Update akun")
+                print("2. Update Beasiswa")
+                pil_1 = input("Masukan pilihan: ")
                 
-                # Memilih role dengan validasi
-                role_option = input("Masukkan pilihan role (1 untuk Admin, 2 untuk User): ")
-                if role_option == "1":
-                    role = "admin"
-                elif role_option == "2":
-                    role = "user"
-                else:
-                    print("Pilihan role tidak valid")
-                    valid_input = False  # Set flag ke False jika input tidak valid
-
-                # Memasukkan saldo dengan validasi
-                if valid_input:  
-                    saldo_input = input("Masukkan saldo baru (kosongkan jika tidak ingin mengubah): ")
-                    try:
-                        saldo = float(saldo_input) if saldo_input else None
-                    except ValueError:
-                        print("Nilai saldo yang anda masukan bukan merupakan angka")
-                        valid_input = False  # Set flag ke False jika input saldo tidak valid
-
-                # Panggil update_data_user hanya jika semua input valid
-                if valid_input:
-                    update_data_user(nama, role, saldo)
-                else:
-                    print("Data tidak dapat diperbarui karena input tidak valid.")
-
-            elif pil_1 == "2":
-                lihat_beasiswa()
-                beasiswa_id = input("Masukkan ID beasiswa: ")
-                valid_input = True  # Flag untuk cek validitas input
-                
-                # Validasi input IPK
-                ipk_input = float(input("Masukkan IPK baru (kosongkan jika tidak ingin mengubah): "))
-                if ipk_input < 0 or ipk_input > 4:
-                    print("Ipk tidak valid")
-                    break
-                try:
-                    ipk = float(ipk_input) if ipk_input else None
-                except ValueError:
-                    print("Nilai IPK yang anda masukkan bukan merupakan angka")
-                    valid_input = False         
-
-                # Validasi input Jumlah Beasiswa
-                if valid_input:  
-                    jumlah_input = input("Masukkan jumlah beasiswa baru (kosongkan jika tidak ingin mengubah): ")
-                    try:
-                        jumlah = float(jumlah_input) if jumlah_input else None
-                    except ValueError:
-                        print("Nilai jumlah beasiswa yang anda masukkan bukan merupakan angka")
-                        valid_input = False 
-
-                # Validasi input Kuota
-                if valid_input: 
-                    kuota_input = input("Masukkan kuota beasiswa baru (kosongkan jika tidak ingin mengubah): ")
-                    try:
-                        kuota = int(kuota_input) if kuota_input else None
-                    except ValueError:
-                        print("Nilai kuota yang anda masukkan bukan merupakan angka")
+                if pil_1 == "1":
+                    lihat_data_user()
+                    nama = input("Masukkan nama user: ")
+                    print("Pilih Role Baru:")
+                    print("1. Admin")
+                    print("2. User")
+                    valid_input = True  
+                    
+                    role_option = input("Masukkan pilihan role (1 untuk Admin, 2 untuk User): ")
+                    if role_option == "1":
+                        role = "admin"
+                    elif role_option == "2":
+                        role = "user"
+                    else:
+                        print("Pilihan role tidak valid")
                         valid_input = False  
 
-                if valid_input:
-                    update_beasiswa(beasiswa_id, ipk, jumlah, kuota)
-                else:
-                    print("Data beasiswa tidak dapat diperbarui karena input tidak valid.")
-        
-        elif pilihan == "4":
-            print("1. Hapus Akun")
-            print("2. Hapus Beasiswa")
-            pil_1 = input("Masukan pilihan: ")
-            if pil_1 == "1":
-                lihat_data_user()
-                nama = input("Masukan nama yang ingin di hapus: ")
-                if nama == "":
-                    print("Nama yang dimasukan tidak boleh kosong")
-                else:
-                    hapus_akun(nama)
-            elif pil_1 == "2":
-                lihat_beasiswa()
-                beasiswa_id = int(input("Masukan id beasiswa yang ingin dihapus: "))
-                hapus_beasiswa(beasiswa_id)
-            
+                    if valid_input:  
+                        saldo_input = input("Masukkan saldo baru (kosongkan jika tidak ingin mengubah): ")
+                        try:
+                            saldo = float(saldo_input) if saldo_input else None
+                        except ValueError:
+                            print("Nilai saldo yang anda masukan bukan merupakan angka")
+                            valid_input = False  
 
-        elif pilihan == "5":
-            menu_login()  
+                    if valid_input:
+                        update_data_user(nama, role, saldo)
+                    else:
+                        print("Data tidak dapat diperbarui karena input tidak valid.")
+
+                elif pil_1 == "2":
+                    lihat_beasiswa()
+                    beasiswa_id = input("Masukkan ID beasiswa: ")
+                    valid_input = True  
+                    
+                    ipk_input = float(input("Masukkan IPK baru (kosongkan jika tidak ingin mengubah): "))
+                    if ipk_input < 0 or ipk_input > 4:
+                        print("Ipk tidak valid")
+                        break
+                    try:
+                        ipk = float(ipk_input) if ipk_input else None
+                    except ValueError:
+                        print("Nilai IPK yang anda masukkan bukan merupakan angka")
+                        valid_input = False         
+
+                    if valid_input:  
+                        jumlah_input = input("Masukkan nominal beasiswa baru (kosongkan jika tidak ingin mengubah): ")
+                        try:
+                            jumlah = float(jumlah_input) if jumlah_input else None
+                        except ValueError:
+                            print("Nilai nominal beasiswa yang anda masukkan bukan merupakan angka")
+                            valid_input = False 
+
+                    if valid_input: 
+                        kuota_input = input("Masukkan kuota beasiswa baru (kosongkan jika tidak ingin mengubah): ")
+                        try:
+                            kuota = int(kuota_input) if kuota_input else None
+                        except ValueError:
+                            print("Nilai kuota yang anda masukkan bukan merupakan angka")
+                            valid_input = False  
+
+                    if valid_input:
+                        update_beasiswa(beasiswa_id, ipk, jumlah, kuota)
+                    else:
+                        print("Data beasiswa tidak dapat diperbarui karena input tidak valid.")
+            
+            elif pilihan == "4":
+                print("1. Hapus Akun")
+                print("2. Hapus Beasiswa")
+                pil_1 = input("Masukan pilihan: ")
+                if pil_1 == "1":
+                    lihat_data_user()
+                    nama = input("Masukan nama yang ingin di hapus: ")
+                    if nama == "":
+                        print("Nama yang dimasukan tidak boleh kosong")
+                    else:
+                        hapus_akun(nama)
+                elif pil_1 == "2":
+                    lihat_beasiswa()
+                    beasiswa_id = int(input("Masukan id beasiswa yang ingin dihapus: "))
+                    hapus_beasiswa(beasiswa_id)
+
+            elif pilihan == "5":
+                menu_login()  
+        except KeyboardInterrupt:
+            print("Operasi dibatalkan")
+            menu_admin()
 
 # Buat menu user
 def menu_user(nama_user):
@@ -694,75 +690,80 @@ def menu_user(nama_user):
     print("1. Daftar beasiswa")
     print("2. Biodata diri")
     print("3. Status pendaftaran")
-    print("4. Notifikasi")
+    print("4. Pengumuman")
     print("5. Logout")
     pilihan = input("Masukkan pilihan: ")
 
-    if pilihan == "1":
-        lihat_beasiswa()
-        beasiswa_id = input("Masukkan ID beasiswa yang ingin didaftarkan (ketik s untuk search, ketik r untuk sorting): ").lower()
+    try:
+        if pilihan == "1":
+            lihat_beasiswa()
+            beasiswa_id = input("Masukkan ID beasiswa yang ingin didaftarkan (ketik s untuk search, ketik r untuk sorting): ").lower()
+            if beasiswa_id == "":
+                menu_user()
+            
+            if beasiswa_id == "s":
+                search()
+                menu_user(nama_user)
+            elif beasiswa_id == "r":
+                print("Pilih kriteria pengurutan:")
+                print("1. IPK")
+                print("2. Nominal Beasiswa")
+                print("3. ID")  # Menambahkan pilihan baru untuk ID
+                pilihan = input("Masukkan pilihan (1, 2, atau 3): ")
+
+                if pilihan == '1':
+                    urutkan_berdasarkan = 'ipk'
+                elif pilihan == '2':
+                    urutkan_berdasarkan = 'jumlah'
+                elif pilihan == '3':
+                    urutkan_berdasarkan = 'id'  # Jika ID dipilih
+                else:
+                    print("Pilihan tidak valid.")
+                    return
+
+                print("Pilih urutan:")
+                print("1. Tertinggi ke Terendah")
+                print("2. Terendah ke Tertinggi")
+                
+                urutan = input("Masukkan pilihan (1 atau 2): ")
+                
+                if urutan == '1':
+                    menurun = True  
+                elif urutan == '2':
+                    menurun = False  
+                else:
+                    print("Pilihan tidak valid.")
+                    return
+                
+                sorting("beasiswa.csv", urutkan_berdasarkan, menurun)  # Memanggil fungsi sorting
+                menu_user(nama_user)
+            else:
+                # Validasi ID beasiswa
+                if not beasiswa_id.isdigit():  
+                    print("ID yang dimasukkan tidak valid. Harap masukkan angka.")
+                    return
+                
+                nama_beasiswa = get_nama_beasiswa_by_id(beasiswa_id)
+                if nama_beasiswa:
+                    print(f"Anda mendaftarkan diri untuk beasiswa: {nama_beasiswa}")
+                    daftar_beasiswa(nama_user, beasiswa_id)
+                else:
+                    print("Beasiswa dengan ID tersebut tidak ditemukan.")
         
-        if beasiswa_id == "s":
-            search()
+        elif pilihan == "2":
+            lihat_data_diri(nama_user)
             menu_user(nama_user)
-        elif beasiswa_id == "r":
-            print("Pilih kriteria pengurutan:")
-            print("1. IPK")
-            print("2. Jumlah Beasiswa")
-            print("3. ID")  # Menambahkan pilihan baru untuk ID
-            pilihan = input("Masukkan pilihan (1, 2, atau 3): ")
-
-            if pilihan == '1':
-                urutkan_berdasarkan = 'ipk'
-            elif pilihan == '2':
-                urutkan_berdasarkan = 'jumlah'
-            elif pilihan == '3':
-                urutkan_berdasarkan = 'id'  # Jika ID dipilih
-            else:
-                print("Pilihan tidak valid.")
-                return
-
-            print("Pilih urutan:")
-            print("1. Tertinggi ke Terendah")
-            print("2. Terendah ke Tertinggi")
-            
-            urutan = input("Masukkan pilihan (1 atau 2): ")
-            
-            if urutan == '1':
-                menurun = True  
-            elif urutan == '2':
-                menurun = False  
-            else:
-                print("Pilihan tidak valid.")
-                return
-            # Panggil fungsi sorting dengan input yang diberikan
-            sorting("beasiswa.csv", urutkan_berdasarkan, menurun)
-            menu_user(nama_user) 
-        else:
-            # Validasi ID beasiswa
-            if not beasiswa_id.isdigit():  
-                print("ID yang dimasukkan tidak valid. Harap masukkan angka.")
-                return
-            
-            nama_beasiswa = get_nama_beasiswa_by_id(beasiswa_id)
-            if nama_beasiswa:
-                print(f"Anda mendaftarkan diri untuk beasiswa: {nama_beasiswa}")
-                daftar_beasiswa(nama_user, beasiswa_id)
-            else:
-                print("Beasiswa dengan ID tersebut tidak ditemukan.")
-    
-    elif pilihan == "2":
-        lihat_data_diri(nama_user)
-    elif pilihan == "3":
-        lihat_beasiswa_terdaftar(nama_user)
-        menu_user(nama_user)
-    elif pilihan == "4":
-        undi_beasiswa(nama_user)
-    elif pilihan == "5":
-        menu_login()
-
-
-
+        elif pilihan == "3":
+            lihat_beasiswa_terdaftar(nama_user)
+            menu_user(nama_user)
+        elif pilihan == "4":
+            undi_beasiswa(nama_user)
+        elif pilihan == "5":
+            menu_login()
+    except KeyboardInterrupt:
+        print("Operasi dibatalkan")
+        menu_user()
+        
 def akses_pengguna(nama, password):
     role = cek_login(nama, password)
     if role == "admin":
@@ -770,61 +771,64 @@ def akses_pengguna(nama, password):
         menu_admin()
     elif role == "user":
         print(f"Selamat datang, {nama}! Anda login sebagai User.")
-        menu_user(nama)  # Kirim nama pengguna ke menu_user
+        menu_user(nama)
     else:
         print("Nama atau password salah, atau peran tidak ditemukan.")
 
 def menu_login():
     while True:
         print("======== Menu Login =========")
-        print("1. Login")
-        print("2. Register")
+        print("1. Register")
+        print("2. Login")
         print("3. Keluar Program")
-        pil_1 = input("Masukan Pilihan: ")
-
-        # Buat login
-        if pil_1 == "1": 
-            print("===== Login ======") 
-            nama = input("Masukan nama: ")
-            password = pwinput.pwinput("Masukan Password: ")
-            akses_pengguna(nama, password)
-
-        # Buat register
-        elif pil_1 == "2": 
-            print("==== Register ====")
-            while True:
-                nama = input("Masukan nama: ")
-                if nama == "":
-                    print("Nama tidak boleh kosong")
-                    continue
-                if any(char in simbol for char in nama) or any(char in angka for char in nama):
-                    print("Nama tidak boleh mengandung angka atau simbol. Coba lagi.")
-                    continue
-                if cek_akun_terdaftar(nama):
-                    print("Nama sudah terdaftar! Coba nama lain.")
-                    continue
-                else:
-                    password = pwinput.pwinput("Masukan Password: ")
-                    if password == "":
-                        print("Password tidak boleh kosong")
+        try:
+            pil_1 = input("Masukan Pilihan: ")
+            # Buat register
+            if pil_1 == "1": 
+                print("==== Register ====")
+                while True:
+                    nama = input("Masukan nama: ")
+                    if nama == "":
+                        print("Nama tidak boleh kosong")
                         continue
-                    try:
-                        ipk = float(input("Masukan IPK: "))
-                        if ipk > 4:
-                            print("IPK tidak boleh melebihi 4")
+                    if any(char in simbol for char in nama) or any(char in angka for char in nama):
+                        print("Nama tidak boleh mengandung angka atau simbol. Coba lagi.")
+                        continue
+                    if cek_akun_terdaftar(nama):
+                        print("Nama sudah terdaftar! Coba nama lain.")
+                        continue
+                    else:
+                        password = pwinput.pwinput("Masukan Password: ")
+                        if password == "":
+                            print("Password tidak boleh kosong")
                             continue
-                        simpan_data_akun(nama, password, ipk)
-                        break
-                    except ValueError:
-                        print("Nilai yang anda masukan bukan merupakan angka")
+                        try:
+                            ipk = float(input("Masukan IPK: "))
+                            if ipk > 4:
+                                print("IPK tidak boleh melebihi 4")
+                                continue
+                            simpan_data_akun(nama, password, ipk)
+                            break
+                        except ValueError:
+                            print("Nilai yang anda masukan bukan merupakan angka")
 
-        # Buat keluar program
-        elif pil_1 == "3": 
-            print("Keluar Program.")
-            exit()
+            # Buat login
+            elif pil_1 == "2": 
+                print("===== Login ======") 
+                nama = input("Masukan nama: ")
+                password = pwinput.pwinput("Masukan Password: ")
+                akses_pengguna(nama, password)
 
-        # Buat pilihan tidak valid
-        else:
-            print("Pilihan tidak valid, coba lagi.")
+            # Buat keluar program
+            elif pil_1 == "3": 
+                print("Keluar Program.")
+                exit()
+
+            # Buat pilihan tidak valid
+            else:
+                print("Pilihan tidak valid, coba lagi.")
+        except KeyboardInterrupt:
+            print("Operasi dibatalkan")
+            menu_login()
 
 menu_login()
