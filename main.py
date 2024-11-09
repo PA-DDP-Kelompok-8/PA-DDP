@@ -1,4 +1,4 @@
-#Last Update 09-11-2024 : 17.00
+#09-11-2024 : 17.17
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -32,23 +32,22 @@ def tarik_uang(nama_user):
         
         print(f"Saldo Anda saat ini: {format_nominal(saldo)}")
         
-        # Meminta input jumlah yang ingin ditarik
+        # input jumlah yang ingin ditarik
         try:
             jumlah_tarik = float(input("Masukkan jumlah uang yang ingin ditarik: ").replace('Rp. ', '').replace('.', '').replace(',', '').strip())
         except ValueError:
             print("Jumlah yang dimasukkan tidak valid. Harap masukkan angka.")
             return
         
-        # Validasi apakah saldo cukup
+        # apakah saldo cukup
         if jumlah_tarik > saldo:
             print("Saldo Anda tidak cukup untuk melakukan penarikan tersebut.")
             return
         
         # Mengurangi saldo
         saldo -= jumlah_tarik
-        row['saldo'] = format_nominal(saldo)  # Update saldo terformat
+        row['saldo'] = format_nominal(saldo)  
 
-        # Menyimpan kembali data
         with open('data.csv', mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=data[0].keys())
             writer.writeheader()
@@ -283,8 +282,8 @@ def get_nama_beasiswa_by_id(beasiswa_id):
             reader = csv.DictReader(file)
             for row in reader:
                 if row['id'] == str(beasiswa_id):
-                    return row['nama']  # Mengembalikan nama beasiswa jika ID cocok
-        return None  # Jika ID tidak ditemukan
+                    return row['nama']  
+        return None  
     except FileNotFoundError:
         print("File beasiswa.csv tidak ditemukan.")
         return None
@@ -326,7 +325,7 @@ def invoice():
                 print("Anda berhasil mendaftar beasiswa")
                 print(f"Nama          : {last_transaction['nama_user']}")
                 print(f"Nama Beasiswa : {last_transaction['nama_beasiswa']}")
-                print(f"Jumlah        : {last_transaction['jumlah_beasiswa']}")  # Ini sudah diformat sebelumnya
+                print(f"Jumlah        : {last_transaction['jumlah_beasiswa']}")  
                 print(f"Tanggal       : {last_transaction['tanggal']}")
                 print("=====================================\n")
     except FileNotFoundError:
@@ -358,7 +357,6 @@ def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
         except FileNotFoundError:
             id_terakhir = 1
 
-        # Pastikan jumlah_beasiswa adalah float
         if isinstance(jumlah_beasiswa, str):
             jumlah_str = jumlah_beasiswa.replace('Rp. ', '').replace('.', '').replace(',', '')
             jumlah_beasiswa = float(jumlah_str)
@@ -368,7 +366,7 @@ def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
             "id_transaksi": id_terakhir,
             "nama_user": nama_user,
             "nama_beasiswa": nama_beasiswa,
-            "jumlah_beasiswa": format_nominal(jumlah_beasiswa),  # Format dengan nominal
+            "jumlah_beasiswa": format_nominal(jumlah_beasiswa),  
             "tanggal": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }]
         
@@ -423,7 +421,7 @@ def daftar_beasiswa(nama_user, beasiswa_id):
                     break
 
         for row in beasiswa_data:
-            if row['id'] == str(beasiswa_id):  # Mencari berdasarkan ID
+            if row['id'] == str(beasiswa_id):  
                 if float(user_data['ipk']) >= float(row['ipk']):
                     if int(row['kuota']) > 0:
                         row['kuota'] = str(int(row['kuota']) - 1)
@@ -460,10 +458,10 @@ def lihat_beasiswa_terdaftar(nama_user):
         with open('Transaksi.csv', mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                if row['nama_user'] == nama_user:  # Memastikan kunci yang dicari benar
+                if row['nama_user'] == nama_user:  
                     table.add_row([row['id_transaksi'], row['nama_beasiswa'], row['jumlah_beasiswa'], row['tanggal']])
         
-        if table.rowcount == 0:  # Jika tidak ada baris, tampilkan pesan tidak ada
+        if table.rowcount == 0:  
             print(f"Tidak ada beasiswa yang terdaftar untuk pengguna: {nama_user}")
         else:
             print(table)
@@ -485,7 +483,7 @@ def lihat_data_diri(nama_user):
                     
                     try:
                         saldo_value = float(row['saldo'].replace('Rp. ', '').replace('.', '').replace(',', '').strip())
-                        print(f"Saldo    : {format_nominal(saldo_value)}")  # Memformat saldo
+                        print(f"Saldo    : {format_nominal(saldo_value)}")  
                     except ValueError:
                         print("Saldo tidak valid, tidak dapat dikonversi ke format angka.")
                     
@@ -510,14 +508,14 @@ def undi_beasiswa(nama_user):
         for index, row in enumerate(berkas_transaksi, start=1):
             print(f"{index}. {row['nama_beasiswa']} - Jumlah: {row['jumlah_beasiswa']} (ID: {row['id_transaksi']})")
 
-        pilihan = input("Pilih beasiswa yang ingin diundi (masukkan nomor): ").strip()  # Mengubah input menjadi string dan hapus whitespace
+        pilihan = input("Pilih beasiswa yang ingin diundi (masukkan nomor): ").strip()  
 
         if pilihan == "":  
             menu_user(nama_user)  
             
         try:
-            pilihan = int(pilihan) - 1  # Mengonversi input ke integer
-        except ValueError:  # Tangkap jika input tidak bisa diubah ke integer
+            pilihan = int(pilihan) - 1  
+        except ValueError:  
             print("Pilihan tidak valid. Silakan masukkan nomor yang tepat.")
             return
 
@@ -532,9 +530,8 @@ def undi_beasiswa(nama_user):
         jika_beruntung = random.choice([True, False])  # 50% peluang
         if jika_beruntung:
             jumlah_beasiswa = float(beasiswa_terpilih['jumlah_beasiswa'].replace('Rp. ', '').replace('.', '').replace(',', ''))
-            print(f"Selamat! Anda mendapatkan beasiswa sebesar {format_nominal(jumlah_beasiswa)}!")  # Format angka
+            print(f"Selamat! Anda mendapatkan beasiswa sebesar {format_nominal(jumlah_beasiswa)}!")  
             
-            # Update saldo dengan benar
             update_saldo(nama_user, jumlah_beasiswa)
         else:
             print("Sayang sekali, Anda tidak mendapatkan beasiswa ini. Coba lagi lain waktu.")
@@ -554,11 +551,10 @@ def update_saldo(nama_user, jumlah):
         
         for row in data:
             if row['nama'] == nama_user:
-                # Menggunakan format yang aman untuk mengubah saldo
                 try:
                     saldo_float = float(row['saldo'].replace('Rp. ', '').replace('.', '').replace(',', '').strip())
                     new_saldo = saldo_float + jumlah
-                    row['saldo'] = format_nominal(new_saldo)  # Memformat saldo
+                    row['saldo'] = format_nominal(new_saldo)  
                     updated = True
                 except ValueError:
                     print("Saldo tidak valid, tidak dapat diperbarui.")
@@ -568,7 +564,7 @@ def update_saldo(nama_user, jumlah):
                 writer = csv.DictWriter(file, fieldnames=data[0].keys())
                 writer.writeheader()
                 writer.writerows(data)
-            print(f"Saldo Anda berhasil diperbarui. Saldo saat ini: {format_nominal(new_saldo)}.")  # Menampilkan saldo dengan format mata uang
+            print(f"Saldo Anda berhasil diperbarui. Saldo saat ini: {format_nominal(new_saldo)}.")  
         else:
             print("Pengguna tidak ditemukan.")
     except FileNotFoundError:
@@ -623,7 +619,6 @@ def sorting(file_path, urutkan_berdasarkan='ipk', menurun=False):
             else:
                 sorted_data = sorted(data, key=lambda x: float(x[urutkan_berdasarkan]), reverse=menurun)
 
-        # Tulis kembali ke file
         with open(file_path, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=data[0].keys())
             writer.writeheader()
