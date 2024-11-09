@@ -56,7 +56,7 @@ akan ada pilihan :
 
 ### Jika memilih opsi 1 
 
-akan keluar list akun yang ada :
+akan ditampilkan list akun yang ada :
 
 ![Screenshot 2024-11-09 214622](https://github.com/user-attachments/assets/db18ccc4-61d6-4bbf-865d-9bbe5381c3cc)
 
@@ -64,7 +64,7 @@ akan keluar list akun yang ada :
 
 ### Jika memilih opsi 2
 
-akan kelur list dari beasiswa :
+akan ditampilkan list dari beasiswa :
 
 ![image](https://github.com/user-attachments/assets/061623eb-fa17-4e44-908f-f91b3c9f54b7)
 
@@ -88,13 +88,14 @@ jika memilih opsi 2 pada menu admin maka akan diminta input yaitu :
 
 jika memilih opsi tiga maka tampilannya akan seperti ini :
 akan ada pilihan :
-1. Melihat list akun
-2. Melihat list beasiswa
+1. Update akun
+2. Update beasiswa
    
-![Screenshot 2024-11-09 213347](https://github.com/user-attachments/assets/b54be357-9e34-41b3-832e-91f31ac6432e)
+![Screenshot 2024-11-09 223240](https://github.com/user-attachments/assets/a5a8605f-6a0d-4509-a43f-ba37e32824ba)
+
 
 ### Jika memilih opsi 1 
-akan keluar list dari akun yang ada.
+akan ditampilkan list dari akun yang ada.
 input pertama, akan diminta memasukkan pilihan ingin mengubah akun menjadi admin atau user.
 kemudian input kedua diminta untuk memasukkan saldo baru(jika tidak ingin diubah maka bisa langsung pencet enter)
 
@@ -103,7 +104,7 @@ dan tapilannya akan seperti ini :
 ![Screenshot 2024-11-09 220705](https://github.com/user-attachments/assets/38dc50b1-d9a2-4702-ba62-d17617ae755e)
 
 ### Jika memilih opsi 2
-akan keluar list dari beasiswa.
+akan diampilkan list dari beasiswa.
 * kemudian diminta id yang ingin di update
 * masukan IPK baru (dapat dikosongkan jika tidak ingin diubah)
 * masukan nominal beasiwa baru (dapat dikosongkan jika tidak ingin diubah)
@@ -115,15 +116,30 @@ akan keluar list dari beasiswa.
 ## 4. Hapus beasiswa/user
 jika memilih opsi empat maka tampilannya akan seperti ini :
 akan ada pilihan :
-1. Melihat list akun
-2. Melihat list beasiswa
+1. Hapus akun
+2. Hapus beasiswa
    
-![Screenshot 2024-11-09 213347](https://github.com/user-attachments/assets/b54be357-9e34-41b3-832e-91f31ac6432e)
+![Screenshot 2024-11-09 223251](https://github.com/user-attachments/assets/d4ab23ec-f2b4-4c8f-9bd9-3b192789bbc5)
+
 
 ### Jika memilih opsi 1 
+
+akan ditampilkan list dari akun yang ada. kemudian, diminta untuk memasukan nama yang ingin dihapus. 
+  
+![Screenshot 2024-11-09 222408](https://github.com/user-attachments/assets/27166e61-ce9e-4d7d-a7ca-c691c728584d)
+
 ### Jika memilih opsi 2
 
+akan ditampilkan list dari beasiswa. kemudian, diminta untuk memasukan ID beasiswa yang ingin dihapus.
+
+![Screenshot 2024-11-09 220815](https://github.com/user-attachments/assets/9fa7878d-8fff-4b13-ae89-40d16c10c32e)
+
+
 ## 5. Logout
+
+jika memilih opsi lima maka program akan langsung kembali ke menu login:
+
+![Screenshot 2024-11-09 223108](https://github.com/user-attachments/assets/02f368ac-dcbb-4073-96b5-6c4006d6f7ba)
 
 
 
