@@ -86,7 +86,43 @@ jika memilih opsi 2 pada menu admin maka akan diminta input yaitu :
 
 ## 3. Update beasiswa/user
 
+jika memilih opsi tiga maka tampilannya akan seperti ini :
+akan ada pilihan :
+1. Melihat list akun
+2. Melihat list beasiswa
+   
+![Screenshot 2024-11-09 213347](https://github.com/user-attachments/assets/b54be357-9e34-41b3-832e-91f31ac6432e)
+
+### Jika memilih opsi 1 
+akan keluar list dari akun yang ada.
+input pertama, akan diminta memasukkan pilihan ingin mengubah akun menjadi admin atau user.
+kemudian input kedua diminta untuk memasukkan saldo baru(jika tidak ingin diubah maka bisa langsung pencet enter)
+
+dan tapilannya akan seperti ini :
+
+![Screenshot 2024-11-09 220705](https://github.com/user-attachments/assets/38dc50b1-d9a2-4702-ba62-d17617ae755e)
+
+### Jika memilih opsi 2
+akan keluar list dari beasiswa.
+* kemudian diminta id yang ingin di update
+* masukan IPK baru (dapat dikosongkan jika tidak ingin diubah)
+* masukan nominal beasiwa baru (dapat dikosongkan jika tidak ingin diubah)
+* masukan kuota beasiswa baru (dapat dikosongkan jika tidak ingin diubah)
+
+![Screenshot 2024-11-09 220815](https://github.com/user-attachments/assets/4404441a-1f3b-440a-a960-28ab4274486a)
+
+
 ## 4. Hapus beasiswa/user
+jika memilih opsi empat maka tampilannya akan seperti ini :
+akan ada pilihan :
+1. Melihat list akun
+2. Melihat list beasiswa
+   
+![Screenshot 2024-11-09 213347](https://github.com/user-attachments/assets/b54be357-9e34-41b3-832e-91f31ac6432e)
+
+### Jika memilih opsi 1 
+### Jika memilih opsi 2
+
 ## 5. Logout
 
 
