@@ -1,4 +1,3 @@
-#Last Update 19.07
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -434,6 +433,7 @@ def daftar_beasiswa(nama_user, beasiswa_id):
                         return
                 else:
                     print("IPK Anda tidak memenuhi syarat minimal untuk beasiswa ini.")
+                    menu_user(nama_user)
                     return
 
         if registered:
