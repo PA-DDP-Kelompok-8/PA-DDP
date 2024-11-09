@@ -1,4 +1,4 @@
-#09-11-2024 : 16.38
+#Last Update 09-11-2024 : 17.00
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -19,7 +19,6 @@ def tarik_uang(nama_user):
             reader = csv.DictReader(file)
             data = list(reader)
 
-        # Mencari pengguna dalam data
         user_found = False
         for row in data:
             if row['nama'] == nama_user:
@@ -76,6 +75,17 @@ def cek_akun_terdaftar(nama):
     except FileNotFoundError:
         return False
 
+def cek_beasiswa_update(beasiswa_id):
+    try:
+        with open("beasiswa.csv", mode="r", newline="", encoding="utf-8") as akun_file:
+            reader = csv.DictReader(akun_file)
+            for row in reader:
+                if row["id"] == str(beasiswa_id):  
+                    return True
+        return False  
+    except FileNotFoundError:
+        return False  
+    
 def cek_beasiswa_terdaftar_admin(nama):
     try:
         with open("beasiswa.csv", mode="r", newline="", encoding="utf-8") as file:
@@ -677,7 +687,7 @@ def menu_admin():
                         break
                     except ValueError:
                         print("Nilai yang anda masukan bukan merupakan angka")
-            
+
             elif pilihan == "3":
                 print("1. Update akun")
                 print("2. Update Beasiswa")
@@ -697,7 +707,7 @@ def menu_admin():
                     elif role_option == "2":
                         role = "user"
                     else:
-                        print("Pilihan role tidak valid")
+                        print("Pilihan role tidak valid.")
                         valid_input = False  
 
                     if valid_input:  
@@ -705,7 +715,7 @@ def menu_admin():
                         try:
                             saldo = float(saldo_input) if saldo_input else None
                         except ValueError:
-                            print("Nilai saldo yang anda masukan bukan merupakan angka")
+                            print("Nilai saldo yang anda masukan bukan merupakan angka.")
                             valid_input = False  
 
                     if valid_input:
@@ -716,24 +726,29 @@ def menu_admin():
                 elif pil_1 == "2":
                     lihat_beasiswa()
                     beasiswa_id = input("Masukkan ID beasiswa: ")
+                    if not cek_beasiswa_update(beasiswa_id):
+                        print("ID beasiswa tidak ditemukan.")
+                        continue  
+                    
                     valid_input = True  
                     
-                    ipk_input = float(input("Masukkan IPK baru (kosongkan jika tidak ingin mengubah): "))
-                    if ipk_input < 0 or ipk_input > 4:
-                        print("Ipk tidak valid")
-                        break
-                    try:
-                        ipk = float(ipk_input) if ipk_input else None
-                    except ValueError:
-                        print("Nilai IPK yang anda masukkan bukan merupakan angka")
-                        valid_input = False         
+                    ipk_input = input("Masukkan IPK baru (kosongkan jika tidak ingin mengubah): ")
+                    if ipk_input:
+                        try:
+                            ipk = float(ipk_input)  
+                            if ipk < 0 or ipk > 4:  
+                                print("IPK tidak valid, harus antara 0 dan 4.")
+                                valid_input = False  
+                        except ValueError:
+                            print("Nilai IPK yang anda masukkan bukan merupakan angka.")
+                            valid_input = False        
 
                     if valid_input:  
                         jumlah_input = input("Masukkan nominal beasiswa baru (kosongkan jika tidak ingin mengubah): ")
                         try:
                             jumlah = float(jumlah_input) if jumlah_input else None
                         except ValueError:
-                            print("Nilai nominal beasiswa yang anda masukkan bukan merupakan angka")
+                            print("Nilai nominal beasiswa yang anda masukkan bukan merupakan angka.")
                             valid_input = False 
 
                     if valid_input: 
@@ -741,14 +756,14 @@ def menu_admin():
                         try:
                             kuota = int(kuota_input) if kuota_input else None
                         except ValueError:
-                            print("Nilai kuota yang anda masukkan bukan merupakan angka")
+                            print("Nilai kuota yang anda masukkan bukan merupakan angka.")
                             valid_input = False  
 
                     if valid_input:
                         update_beasiswa(beasiswa_id, ipk, jumlah, kuota)
                     else:
                         print("Data beasiswa tidak dapat diperbarui karena input tidak valid.")
-            
+
             elif pilihan == "4":
                 print("1. Hapus Akun")
                 print("2. Hapus Beasiswa")
@@ -760,10 +775,21 @@ def menu_admin():
                         print("Nama yang dimasukan tidak boleh kosong")
                     else:
                         hapus_akun(nama)
-                elif pil_1 == "2":
+                elif pil_1 == "2":  # 
                     lihat_beasiswa()
-                    beasiswa_id = int(input("Masukan id beasiswa yang ingin dihapus: "))
-                    hapus_beasiswa(beasiswa_id)
+
+                    beasiswa_id = input("Masukan ID beasiswa yang ingin dihapus: ")
+                    if not beasiswa_id.isdigit():  
+                        print("ID yang dimasukkan tidak valid. Harap masukkan angka.")
+                        continue  
+
+                    beasiswa_id = int(beasiswa_id)  
+                    
+                    if not cek_beasiswa_update(beasiswa_id):  
+                        print("ID beasiswa tidak ditemukan.")
+                        continue  
+                    
+                    hapus_beasiswa(beasiswa_id)  
 
             elif pilihan == "5":
                 menu_login()  
