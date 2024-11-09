@@ -1,4 +1,4 @@
-#Last Update 09-11-2024 : 16.20
+#09-11-2024 : 16.38
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -500,11 +500,19 @@ def undi_beasiswa(nama_user):
         for index, row in enumerate(berkas_transaksi, start=1):
             print(f"{index}. {row['nama_beasiswa']} - Jumlah: {row['jumlah_beasiswa']} (ID: {row['id_transaksi']})")
 
-        pilihan = int(input("Pilih beasiswa yang ingin diundi (masukkan nomor): ")) - 1
-        if pilihan == "":
-            menu_user()
+        pilihan = input("Pilih beasiswa yang ingin diundi (masukkan nomor): ").strip()  # Mengubah input menjadi string dan hapus whitespace
+
+        if pilihan == "":  
+            menu_user(nama_user)  
+            
+        try:
+            pilihan = int(pilihan) - 1  # Mengonversi input ke integer
+        except ValueError:  # Tangkap jika input tidak bisa diubah ke integer
+            print("Pilihan tidak valid. Silakan masukkan nomor yang tepat.")
+            return
+
         if pilihan < 0 or pilihan >= len(berkas_transaksi):
-            print("Pilihan tidak valid.")
+            print("Pilihan tidak valid. Silakan pilih nomor yang terdaftar.")
             return
             
         beasiswa_terpilih = berkas_transaksi[pilihan]
@@ -513,21 +521,16 @@ def undi_beasiswa(nama_user):
         # Mengundi
         jika_beruntung = random.choice([True, False])  # 50% peluang
         if jika_beruntung:
-            # Memastikan konversi jumlah_beasiswa dengan benar
-            jumlah_beasiswa = beasiswa_terpilih['jumlah_beasiswa'].replace('Rp.', '').replace('.', '').replace(',', '').strip()
-            try:
-                jumlah_beasiswa = float(jumlah_beasiswa)  # Konversi ke float
-                print(f"Selamat! Anda mendapatkan beasiswa sebesar {format_nominal(jumlah_beasiswa)}!")  # Format angka
-                update_saldo(nama_user, jumlah_beasiswa)  # Memasukkan jumlah beasiswa ke saldo
-            except ValueError:
-                print("Terjadi kesalahan konversi jumlah. Pastikan format jumlah benar.")
+            jumlah_beasiswa = float(beasiswa_terpilih['jumlah_beasiswa'].replace('Rp. ', '').replace('.', '').replace(',', ''))
+            print(f"Selamat! Anda mendapatkan beasiswa sebesar {format_nominal(jumlah_beasiswa)}!")  # Format angka
+            
+            # Update saldo dengan benar
+            update_saldo(nama_user, jumlah_beasiswa)
         else:
             print("Sayang sekali, Anda tidak mendapatkan beasiswa ini. Coba lagi lain waktu.")
 
     except FileNotFoundError:
         print("File Transaksi.csv tidak ditemukan.")
-    except ValueError as ve:
-        print(f"Terjadi kesalahan konversi: {ve}")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
 
@@ -792,7 +795,8 @@ def menu_user(nama_user):
             print("2. Nominal Beasiswa")
             print("3. ID")  
             pilihan = input("Masukkan pilihan (1, 2, atau 3): ")
-
+            if pilihan == "":
+                menu_user(nama_user)
             if pilihan == '1':
                 urutkan_berdasarkan = 'ipk'
             elif pilihan == '2':
@@ -801,6 +805,7 @@ def menu_user(nama_user):
                 urutkan_berdasarkan = 'id'  
             else:
                 print("Pilihan tidak valid.")
+                menu_user(nama_user)
                 return
 
             print("Pilih urutan:")
@@ -808,13 +813,15 @@ def menu_user(nama_user):
             print("2. Terendah ke Tertinggi")
             
             urutan = input("Masukkan pilihan (1 atau 2): ")
-            
+            if urutan == "":
+                menu_user(nama_user)
             if urutan == '1':
                 menurun = True  
             elif urutan == '2':
                 menurun = False  
             else:
                 print("Pilihan tidak valid.")
+                menu_user(nama_user)
                 return
             
             sorting("beasiswa.csv", urutkan_berdasarkan, menurun)
@@ -822,6 +829,7 @@ def menu_user(nama_user):
         else:
             if not beasiswa_id.isdigit():  
                 print("ID yang dimasukkan tidak valid. Harap masukkan angka.")
+                menu_user(nama_user)
                 return
             
             nama_beasiswa = get_nama_beasiswa_by_id(beasiswa_id)
@@ -845,7 +853,10 @@ def menu_user(nama_user):
         menu_user(nama_user)
     elif pilihan == "6":
         menu_login()
-        
+    else:
+        print("Pilihan tidak valid")
+        menu_user(nama_user)
+
 def akses_pengguna(nama, password):
     role = cek_login(nama, password)
     if role == "admin":
