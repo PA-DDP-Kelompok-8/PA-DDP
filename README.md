@@ -141,23 +141,68 @@ jika memilih opsi lima maka program akan langsung kembali ke menu login:
 
 ![Screenshot 2024-11-09 223108](https://github.com/user-attachments/assets/02f368ac-dcbb-4073-96b5-6c4006d6f7ba)
 
+## Penjelasan Fitur User
 
+![image](https://github.com/user-attachments/assets/2b2d6602-fbd9-47fc-942e-595efde9e3fa)
 
-
-
-#### * jika login sebagai User 
-akan diminta memasukan username dan password user dan jika berhasil tampilanya akan seperti ini :
-
-![Screenshot 2024-11-09 211328](https://github.com/user-attachments/assets/e36c3909-6e69-4b2e-8d53-cff2c4fca5a9)
-
-Akan langsung keluar fitur-fitur dari user 
-Fitur User yaitu :
-1. Daftar Beasiswa
-2. Biodata Diri
-3. Status Pendaftaran
+Di menu user terdapat 6 pilihan:
+1. Daftar beasiswa
+2. Biodata diri
+3. Status pendaftaran
 4. Pengumuman
-5. Tarik Uang
+5. Tarik uang
 6. Logout
+
+## 1. Daftar Beasiswa
+
+![image](https://github.com/user-attachments/assets/a0b512d7-63fb-4998-b3ec-5a266a8cd6b5)
+
+![image](https://github.com/user-attachments/assets/429a6b40-2537-457a-9f86-09e9708afaac)
+
+akan muncul list beasiswa dan akan diminta input id yang ingin didaftarkan atau ketik s untuk search atau ketik r untuk sorting
+
+jika memilih id dan berhasil maka akan muncul invoice 
+
+![image](https://github.com/user-attachments/assets/e68d6937-7702-447e-b6df-03f08177967e)
+
+jika memilih id tapi gagal akan muncul tulisan
+
+![image](https://github.com/user-attachments/assets/2efd09f8-83c3-4598-8d35-ba577996fc04)
+
+jika memilih search (s) maka akan diminta input nama beasiswa, dan jika kita mencari nama maka akan ke search seperti:
+
+![image](https://github.com/user-attachments/assets/5b45a4fb-b7cb-44c4-b36c-7d736611924c)
+
+jika memilih sorting (r) maka akan muncul 3 pilihan yaitu ipk, nominal, dan id dan setelah itu akan diminta urutan dari tertinggi ke rendah atau sebaliknya dan akan ke sorting
+
+![image](https://github.com/user-attachments/assets/6b690987-313d-43a4-a73e-463f56bf8c46)
+
+
+## 2. Biodata Diri
+jika memilih biodata diri akan muncul biodata diri yang terdiri nama, password, ipk, saldo:
+
+![image](https://github.com/user-attachments/assets/a03ceac6-2b94-48e6-bee8-3fa4a276c1a0)
+
+## 3. Status Pendaftaran
+jika memilih status pendaftaran maka akan muncul beasiswa yang kita telah kita daftar dan tanggal pendaftaran
+
+![image](https://github.com/user-attachments/assets/56f9ec1f-dd58-4e0d-bde3-3e6d1717f04f)
+
+## 4. Pengumuman
+jika memiih pengumuman maka kita bisa mengundi beasiswa yang kita daftar dengan kemungkinan 50% dengan cara input nomer
+jika dapat saldo akan bertambah
+
+![image](https://github.com/user-attachments/assets/7da25f53-2106-4310-9805-ad0187ff806e)
+
+## 5. Tarik uang
+jika memilih tarik saldo maka kita bisa memilih jumlah saldo yang ingin kita tarik
+
+![image](https://github.com/user-attachments/assets/e405fe0e-fe1f-4a4d-8541-dfc04cdf4878)
+
+## 6. Logout 
+jika memilih logout maka akan kembali ke menu login
+
+![image](https://github.com/user-attachments/assets/df32c921-284c-4438-8667-adf42c4cf4e0)
 
 
 
