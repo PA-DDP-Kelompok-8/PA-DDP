@@ -15,7 +15,7 @@
 Pada tampilan ini terdapat 3 opsi menu seperti yang ada pada gambar diatas. 
 Opsi pertama ditujukan untuk admin atau user yang sudah memiliki akun sebelumnya, opsi kedua ditujukan kepada user yang belum memiliki akun dan opsi ketiga ditujukan apabila admin atau user ingin keluar program.
 
-### 1. Register
+## 1. Register
 
 ![Screenshot 2024-11-09 210139](https://github.com/user-attachments/assets/7af4f736-6feb-4ffc-9ff8-5374dc28c35d)
 
@@ -26,7 +26,7 @@ akan diminta input :
 * Memasukan IPK
   
 
-### 2. Login
+## 2. Login
 
 Untuk opsi login, kita akan diminta untuk memasukkan nama dan juga password yang sesuai.
 
