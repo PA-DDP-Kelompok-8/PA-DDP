@@ -6,6 +6,19 @@
 
 **Nama : Asriah Ainun Fazah (2409116068)**
 
+# Flowchart
+## Menu Login
+![PA DDP drawio (2)-Login drawio](https://github.com/user-attachments/assets/d74941be-bd1a-4efa-b082-6780cc54d9ea)
+
+
+## Menu Admin
+![PA DDP drawio (2)-menu admin drawio](https://github.com/user-attachments/assets/85489800-7ba0-48a1-80ef-6a324560bc13)
+
+
+## Menu User
+![Uploading PA DDP.drawio (2)-menu user.drawio.png…]()
+
+
 # Dokumentasi Program dan Penjelasan
 ## Tampilan Awal Program : Menu Login
 
