@@ -125,6 +125,7 @@ jika memilih opsi 2 pada menu admin maka akan diminta input yaitu :
 ## 3. Update beasiswa/user
 
 jika memilih opsi tiga maka tampilannya akan seperti ini :
+
 akan ada pilihan :
 1. Update akun
 2. Update beasiswa
