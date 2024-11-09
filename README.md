@@ -19,7 +19,8 @@ Opsi pertama ditujukan untuk admin atau user yang sudah memiliki akun sebelumnya
 
 ![Screenshot 2024-11-09 210139](https://github.com/user-attachments/assets/7af4f736-6feb-4ffc-9ff8-5374dc28c35d)
 
-jika memasukan pilihan 1 maka tampilan akan seperti ini,
+jika memasukan pilihan 1 maka tampilan akan seperti ini.
+
 akan diminta input :
 * Nama username yang baru
 * Buat password
@@ -48,6 +49,7 @@ Fitur Admin yaitu :
 ## 1. Lihat beasiswa/user
 
 jika memilih opsi satu maka tampilannya akan seperti ini :
+
 akan ada pilihan :
 1. Melihat list akun
 2. Melihat list beasiswa
@@ -115,6 +117,7 @@ akan diampilkan list dari beasiswa.
 
 ## 4. Hapus beasiswa/user
 jika memilih opsi empat maka tampilannya akan seperti ini :
+
 akan ada pilihan :
 1. Hapus akun
 2. Hapus beasiswa
