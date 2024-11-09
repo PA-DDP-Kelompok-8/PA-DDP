@@ -45,12 +45,13 @@ akan diminta input :
 
 Untuk opsi login, kita akan diminta untuk memasukkan nama dan juga password yang sesuai.
 
-### * Jika login sebagai Admin 
+###  * Jika login sebagai Admin 
 akan diminta memasukan username dan password admin dan jika berhasil tampilanya akan seperti ini :
   
 ![Screenshot 2024-11-09 211250](https://github.com/user-attachments/assets/bba6ddaa-d02c-410e-b858-f00fc0652821)
 
-Akan langsung keluar outout fitur-fitur admin
+Akan langsung ditampilkan fitur-fitur admin
+
 Fitur Admin yaitu :
 1. Lihat beasiswa/user
 2. Tambah Beasiswa
@@ -58,13 +59,35 @@ Fitur Admin yaitu :
 4. Hapus beasiswa/user
 5. Logout
 
+### * Jika login sebagai user
+akan diminta memasukan username dan password admin dan jika berhasil tampilanya akan seperti ini :
+
+![Screenshot 2024-11-09 225838](https://github.com/user-attachments/assets/696ff3d5-baf3-4523-a395-4baa3ed8d7c0)
+
+akan langsung ditampilkan fitur-fitur user
+
+Fitur User yaitu :
+1. Daftar beasiswa
+2. Biodata diri
+3. Status pendaftaran
+4. Pengumuman
+5. Tarik Uang
+6. Logout
+
+## 3. Keluar Program
+jika memilih opsi tiga, maka akan program akan langsung berhenti dan menampilkan output "keluar program"
+
+![Screenshot 2024-11-09 230438](https://github.com/user-attachments/assets/43909eac-9cad-4ea9-98d8-602b50f6c118)
+
+
+
 ## Penjelasan Fitur Admin
 
 ## 1. Lihat beasiswa/user
 
 jika memilih opsi satu maka tampilannya akan seperti ini :
 
-akan ada pilihan :
+akan ada pilihan : 
 1. Melihat list akun
 2. Melihat list beasiswa
    
