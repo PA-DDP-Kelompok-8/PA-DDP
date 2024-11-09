@@ -1,4 +1,4 @@
-#last update 17.35
+#Last Update 19.07
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -343,6 +343,7 @@ def simpan_transaksi(nama_user, beasiswa_id, jumlah_beasiswa):
         nama_beasiswa = get_nama_beasiswa_by_id(beasiswa_id)
         if not nama_beasiswa:
             print("Beasiswa dengan ID tersebut tidak ditemukan.")
+            menu_user(nama_user)
             return
         
         # Cek apakah user sudah mendaftar beasiswa ini sebelumnya
@@ -708,16 +709,21 @@ def menu_admin():
 
                     if valid_input:  
                         saldo_input = input("Masukkan saldo baru (kosongkan jika tidak ingin mengubah): ")
-                        try:
-                            saldo = float(saldo_input) if saldo_input else None
-                        except ValueError:
-                            print("Nilai saldo yang anda masukan bukan merupakan angka.")
-                            valid_input = False  
+                        if saldo_input:  # Memeriksa apakah ada input
+                            try:
+                                saldo = float(saldo_input)  
+                                if saldo < 0:  # Memastikan saldo tidak negatif
+                                    print("Saldo tidak boleh negatif.")
+                                    valid_input = False
+                            except ValueError:
+                                print("Nilai saldo yang anda masukan bukan merupakan angka.")
+                                valid_input = False  
 
                     if valid_input:
                         update_data_user(nama, role, saldo)
                     else:
                         print("Data tidak dapat diperbarui karena input tidak valid.")
+
                 elif pil_1 == "2":
                     lihat_beasiswa()
                     beasiswa_id = input("Masukkan ID beasiswa: ")
@@ -737,6 +743,7 @@ def menu_admin():
                         except ValueError:
                             print("Nilai IPK yang anda masukkan bukan merupakan angka.")
                             valid_input = False  
+
                     if valid_input:
                         if not ipk_input:  
                             ipk = None
@@ -747,6 +754,9 @@ def menu_admin():
                         if jumlah_input: 
                             try:
                                 jumlah = float(jumlah_input)
+                                if jumlah < 0:  # Memastikan jumlah beasiswa tidak negatif
+                                    print("Nominal beasiswa tidak boleh negatif.")
+                                    valid_input = False
                             except ValueError:
                                 print("Nilai nominal beasiswa yang anda masukkan bukan merupakan angka.")
                                 valid_input = False 
@@ -757,12 +767,15 @@ def menu_admin():
                         if kuota_input:
                             try:
                                 kuota = int(kuota_input)
+                                if kuota < 0:  # Memastikan kuota tidak negatif
+                                    print("Kuota tidak boleh negatif.")
+                                    valid_input = False  
                             except ValueError:
                                 print("Nilai kuota yang anda masukkan bukan merupakan angka.")
                                 valid_input = False  
                         else:
                             kuota = None  
-                        
+
                         if valid_input:
                             update_beasiswa(beasiswa_id, ipk, jumlah, kuota)
                         else:
