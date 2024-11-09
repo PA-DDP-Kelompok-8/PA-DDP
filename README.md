@@ -107,8 +107,7 @@ akan ditampilkan list dari beasiswa :
 
 ![image](https://github.com/user-attachments/assets/061623eb-fa17-4e44-908f-f91b3c9f54b7)
 
-
-* dan akan langsung kembali ke menu admin
+dan akan langsung kembali ke menu admin
 
 ## 2. Tambah beasiswa 
 jika memilih opsi 2 pada menu admin maka akan diminta input yaitu :
@@ -119,7 +118,7 @@ jika memilih opsi 2 pada menu admin maka akan diminta input yaitu :
   
 ![Screenshot 2024-11-09 215451](https://github.com/user-attachments/assets/ad022ef9-b836-4f7d-84e4-39c18b94cce9)
 
-* jika tidak memnuhi syarat akan mengulang memasukan dari awal :
+* jika tidak memnuhi syarat akan mengulang inputan dari awal :
 
 ![Screenshot 2024-11-09 220227](https://github.com/user-attachments/assets/2308579a-b2f9-4615-9245-36154040d2e9)
 
