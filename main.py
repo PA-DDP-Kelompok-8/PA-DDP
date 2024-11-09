@@ -1,4 +1,4 @@
-#Last Update 09-11-2024 : 09.35
+#Last Update 09-11-2024 : 16.20
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -501,7 +501,8 @@ def undi_beasiswa(nama_user):
             print(f"{index}. {row['nama_beasiswa']} - Jumlah: {row['jumlah_beasiswa']} (ID: {row['id_transaksi']})")
 
         pilihan = int(input("Pilih beasiswa yang ingin diundi (masukkan nomor): ")) - 1
-
+        if pilihan == "":
+            menu_user()
         if pilihan < 0 or pilihan >= len(berkas_transaksi):
             print("Pilihan tidak valid.")
             return
