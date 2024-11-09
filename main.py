@@ -1,4 +1,4 @@
-#09-11-2024 : 17.17
+#last update 17.35
 import pwinput
 import csv
 from prettytable import PrettyTable
@@ -197,12 +197,13 @@ def update_beasiswa(beasiswa_id, ipk=None, jumlah=None, kuota=None):
         for row in data:
             if row['id'] == beasiswa_id:
                 if ipk is not None:
-                    row['ipk'] = ipk
+                    row['ipk'] = ipk  # Hanya diperbarui jika diberikan nilai
                 if jumlah is not None:
-                    row['jumlah'] = jumlah
+                    row['jumlah'] = format_nominal(jumlah)  # Memformat sebelum menyimpan
                 if kuota is not None:
-                    row['kuota'] = kuota
+                    row['kuota'] = kuota  # Hanya diperbarui jika diberikan nilai
                 updated = True
+                break  # Keluar dari loop setelah menemukan dan memperbarui yang sesuai
 
         if updated:
             with open('beasiswa.csv', mode='w', newline='', encoding='utf-8') as file:
@@ -717,7 +718,6 @@ def menu_admin():
                         update_data_user(nama, role, saldo)
                     else:
                         print("Data tidak dapat diperbarui karena input tidak valid.")
-
                 elif pil_1 == "2":
                     lihat_beasiswa()
                     beasiswa_id = input("Masukkan ID beasiswa: ")
@@ -726,38 +726,47 @@ def menu_admin():
                         continue  
                     
                     valid_input = True  
-                    
                     ipk_input = input("Masukkan IPK baru (kosongkan jika tidak ingin mengubah): ")
-                    if ipk_input:
+                    
+                    if ipk_input:  
                         try:
-                            ipk = float(ipk_input)  
-                            if ipk < 0 or ipk > 4:  
+                            ipk = float(ipk_input)
+                            if ipk < 0 or ipk > 4:
                                 print("IPK tidak valid, harus antara 0 dan 4.")
-                                valid_input = False  
+                                valid_input = False
                         except ValueError:
                             print("Nilai IPK yang anda masukkan bukan merupakan angka.")
-                            valid_input = False        
-
-                    if valid_input:  
-                        jumlah_input = input("Masukkan nominal beasiswa baru (kosongkan jika tidak ingin mengubah): ")
-                        try:
-                            jumlah = float(jumlah_input) if jumlah_input else None
-                        except ValueError:
-                            print("Nilai nominal beasiswa yang anda masukkan bukan merupakan angka.")
-                            valid_input = False 
-
-                    if valid_input: 
-                        kuota_input = input("Masukkan kuota beasiswa baru (kosongkan jika tidak ingin mengubah): ")
-                        try:
-                            kuota = int(kuota_input) if kuota_input else None
-                        except ValueError:
-                            print("Nilai kuota yang anda masukkan bukan merupakan angka.")
                             valid_input = False  
-
                     if valid_input:
-                        update_beasiswa(beasiswa_id, ipk, jumlah, kuota)
-                    else:
-                        print("Data beasiswa tidak dapat diperbarui karena input tidak valid.")
+                        if not ipk_input:  
+                            ipk = None
+                        else:
+                            ipk = float(ipk_input)
+
+                        jumlah_input = input("Masukkan nominal beasiswa baru (kosongkan jika tidak ingin mengubah): ")
+                        if jumlah_input: 
+                            try:
+                                jumlah = float(jumlah_input)
+                            except ValueError:
+                                print("Nilai nominal beasiswa yang anda masukkan bukan merupakan angka.")
+                                valid_input = False 
+                        else:
+                            jumlah = None  
+
+                        kuota_input = input("Masukkan kuota beasiswa baru (kosongkan jika tidak ingin mengubah): ")
+                        if kuota_input:
+                            try:
+                                kuota = int(kuota_input)
+                            except ValueError:
+                                print("Nilai kuota yang anda masukkan bukan merupakan angka.")
+                                valid_input = False  
+                        else:
+                            kuota = None  
+                        
+                        if valid_input:
+                            update_beasiswa(beasiswa_id, ipk, jumlah, kuota)
+                        else:
+                            print("Data beasiswa tidak dapat diperbarui karena input tidak valid.")
 
             elif pilihan == "4":
                 print("1. Hapus Akun")
