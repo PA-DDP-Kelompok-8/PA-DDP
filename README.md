@@ -30,7 +30,7 @@ akan diminta input :
 
 Untuk opsi login, kita akan diminta untuk memasukkan nama dan juga password yang sesuai.
 
-#### * Jika login sebagai Admin 
+### * Jika login sebagai Admin 
 akan diminta memasukan username dan password admin dan jika berhasil tampilanya akan seperti ini :
   
 ![Screenshot 2024-11-09 211250](https://github.com/user-attachments/assets/bba6ddaa-d02c-410e-b858-f00fc0652821)
@@ -54,10 +54,40 @@ akan ada pilihan :
    
 ![Screenshot 2024-11-09 213347](https://github.com/user-attachments/assets/b54be357-9e34-41b3-832e-91f31ac6432e)
 
-### jika memilih opsi 1 
-akan keluar list dari akun yang ada
-![Screenshot 2024-11-09 213201](https://github.com/user-attachments/assets/c110c13e-9152-49da-ac57-93c248c3ad87)
+### Jika memilih opsi 1 
 
+akan keluar list akun yang ada :
+
+![Screenshot 2024-11-09 214622](https://github.com/user-attachments/assets/db18ccc4-61d6-4bbf-865d-9bbe5381c3cc)
+
+* dan akan langsung kembali ke menu admin
+
+### Jika memilih opsi 2
+
+akan kelur list dari beasiswa :
+
+![image](https://github.com/user-attachments/assets/061623eb-fa17-4e44-908f-f91b3c9f54b7)
+
+
+* dan akan langsung kembali ke menu admin
+
+## 2. Tambah beasiswa 
+jika memilih opsi 2 pada menu admin maka akan diminta input yaitu :
+* Nama Beasiswa (harus baru dan tidak ada dalam daftar)
+* Minimal IPK (tidak boleh lebih 4)
+* Nominal Beasiswa (tidak boleh mines)
+* Kuota Penerimaan Beasiswa(tidak boleh mines)
+  
+![Screenshot 2024-11-09 215451](https://github.com/user-attachments/assets/ad022ef9-b836-4f7d-84e4-39c18b94cce9)
+
+* jika tidak memnuhi syarat akan mengulang memasukan dari awal :
+
+![Screenshot 2024-11-09 220227](https://github.com/user-attachments/assets/2308579a-b2f9-4615-9245-36154040d2e9)
+
+## 3. Update beasiswa/user
+
+## 4. Hapus beasiswa/user
+## 5. Logout
 
 
 
