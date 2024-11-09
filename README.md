@@ -26,13 +26,11 @@ akan diminta input :
 * Memasukan IPK
   
 
-
-
 ### 2. Login
 
 Untuk opsi login, kita akan diminta untuk memasukkan nama dan juga password yang sesuai.
 
-#### * Jika login sebagai Admin 
+#### - Jika login sebagai Admin 
 akan diminta memasukan username dan password admin dan jika berhasil tampilanya akan seperti ini :
   
 ![Screenshot 2024-11-09 211250](https://github.com/user-attachments/assets/bba6ddaa-d02c-410e-b858-f00fc0652821)
@@ -51,12 +49,12 @@ akan diminta memasukan username dan password user dan jika berhasil tampilanya a
 
 Akan langsung keluar fitur-fitur dari user 
 Fitur User yaitu :
-* Daftar Beasiswa
-* Biodata Diri
-* Status Pendaftaran
-* Pengumuman
-* Tarik Uang
-* Logout
+1. Daftar Beasiswa
+2. Biodata Diri
+3. Status Pendaftaran
+4. Pengumuman
+5. Tarik Uang
+6. Logout
 
 
 
