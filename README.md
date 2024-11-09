@@ -30,17 +30,38 @@ akan diminta input :
 
 Untuk opsi login, kita akan diminta untuk memasukkan nama dan juga password yang sesuai.
 
-#### - Jika login sebagai Admin 
+#### * Jika login sebagai Admin 
 akan diminta memasukan username dan password admin dan jika berhasil tampilanya akan seperti ini :
   
 ![Screenshot 2024-11-09 211250](https://github.com/user-attachments/assets/bba6ddaa-d02c-410e-b858-f00fc0652821)
 
 Akan langsung keluar outout fitur-fitur admin
 Fitur Admin yaitu :
-* melihat beasiswa/user menambahkan beasiswa
-* mengupdate beasiswa/user
-* menghapus beasiswa/user yang diinginkan oleh admin
-* opsi logout.
+1. Lihat beasiswa/user
+2. Tambah Beasiswa
+3. Update beasiswa/user
+4. Hapus beasiswa/user
+5. Logout
+
+## Penjelasan Fitur Admin
+
+## 1. Lihat beasiswa/user
+
+jika memilih opsi satu maka tampilannya akan seperti ini :
+akan ada pilihan :
+1. Melihat list akun
+2. Melihat list beasiswa
+   
+![Screenshot 2024-11-09 213347](https://github.com/user-attachments/assets/b54be357-9e34-41b3-832e-91f31ac6432e)
+
+### jika memilih opsi 1 
+akan keluar list dari akun yang ada
+![Screenshot 2024-11-09 213201](https://github.com/user-attachments/assets/c110c13e-9152-49da-ac57-93c248c3ad87)
+
+
+
+
+
 
 #### * jika login sebagai User 
 akan diminta memasukan username dan password user dan jika berhasil tampilanya akan seperti ini :
